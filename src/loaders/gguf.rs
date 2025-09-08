@@ -11,6 +11,7 @@ use crate::models::{ModelImpl, ModelLlamaQuantized};
 use crate::templates::{TemplateDummy, TemplateImpl, TemplateJinja};
 use candle_core::quantized::gguf_file::{Content, Value};
 use llama::{parse_llama_kv, LoaderGgufInfoModelLlama};
+use ahash::AHashMap;
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
@@ -214,7 +215,7 @@ impl LoaderImpl for LoaderGguf {
                 // create vocabulary
                 // TODO: profile with pre-allocated HashMap capacity
                 let vocab: Vocab = {
-                    let mut tknmap = HashMap::new();
+                    let mut tknmap = AHashMap::new();
                     for (i, tkn) in (0_u32..).zip(self.info.tokenizer.tokens.iter()) {
                         tknmap.insert(tkn.clone(), i);
                     }
